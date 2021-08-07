@@ -1,32 +1,58 @@
 {
   "expo": {
-    "name": "solinca-notification-mobile",
-    "slug": "solinca-notification-mobile",
+    "name": "Notify Me Solinca",
+    "slug": "notify-me-solinca",
     "version": "1.0.0",
     "orientation": "portrait",
+    "userInterfaceStyle": "automatic",
     "icon": "./assets/icon.png",
     "splash": {
       "image": "./assets/splash.png",
       "resizeMode": "contain",
-      "backgroundColor": "#ffffff"
+      "backgroundColor": "#CA2C92"
     },
     "updates": {
       "fallbackToCacheTimeout": 0
     },
-    "assetBundlePatterns": [
-      "**/*"
-    ],
+    "assetBundlePatterns": ["**/*"],
     "ios": {
-      "supportsTablet": true
+      "supportsTablet": true,
+      "infoPlist": {
+        "UIBackgroundModes": "remote-notification"
+      }
     },
     "android": {
       "adaptiveIcon": {
         "foregroundImage": "./assets/adaptive-icon.png",
-        "backgroundColor": "#FFFFFF"
-      }
+        "backgroundColor": "#CA2C92"
+      },
+      "icon": "./assets/notification-icon.png",
+      "useNextNotificationsApi": false,
+      "package": "com.costa.mariana",
+      "googleServicesFile": "./google-services.json"
     },
     "web": {
       "favicon": "./assets/favicon.png"
-    }
+    },
+    "notification": {
+      "icon": "./assets/notification-icon.png",
+      "color": "#CA2C92",
+      "androidMode": "default",
+      "androidCollapsedTitle": "Notify me Solinca",
+      "iosDisplayInForeground": true
+    },
+    "plugins": [
+      [
+        "expo-notifications",
+        {
+          "icon": "./assets/notification-icon.png",
+          "color": "#CA2C92",
+          "androidCollapsedTitle": "Notify me Solinca",
+          "androidMode": "default",
+          "sounds": [],
+          "iosDisplayInForeground": true
+        }
+      ]
+    ]
   }
 }

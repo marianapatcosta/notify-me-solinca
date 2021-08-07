@@ -1,21 +1,43 @@
-import { StatusBar } from 'expo-status-bar';
-import React from 'react';
-import { StyleSheet, Text, View } from 'react-native';
+import React, { useEffect } from 'react'
+import { StatusBar } from 'react-native'
+import { useFonts } from 'expo-font'
+import AppLoading from 'expo-app-loading'
+import { decode, encode } from 'base-64'
+import { AppProvider } from './src/contexts'
+import { useLocale } from './src/hooks/useLocale'
+import { Routes } from './src/routes'
 
 export default function App() {
-  return (
-    <View style={styles.container}>
-      <Text>Open up App.tsx to start working on your app!</Text>
-      <StatusBar style="auto" />
-    </View>
-  );
-}
+  const { getStoredLocale } = useLocale()
+  const [areFontsLoaded] = useFonts({
+    Uchen: require('./src/assets/fonts/Uchen-Regular.ttf'),
+    ZenLoop: require('./src/assets/fonts/ZenLoop-Regular.ttf'),
+  })
 
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    backgroundColor: '#fff',
-    alignItems: 'center',
-    justifyContent: 'center',
-  },
-});
+  if (!global.btoa) {
+    global.btoa = encode
+  }
+
+  if (!global.atob) {
+    global.atob = decode
+  }
+
+  useEffect(() => {
+    getStoredLocale()
+  }, [])
+
+  if (!areFontsLoaded) {
+    return <AppLoading />
+  }
+
+  return (
+    <AppProvider>
+      <StatusBar
+        barStyle='light-content'
+        backgroundColor='transparent'
+        translucent
+      />
+      <Routes />
+    </AppProvider>
+  )
+}
