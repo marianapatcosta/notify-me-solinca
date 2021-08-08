@@ -127,8 +127,7 @@ export const Home = () => {
 
   useFocusEffect(
     useCallback(() => {
-      fetchAvailableClasses()
-      fetchOpenAirAvailableClasses()
+      Promise.all([fetchAvailableClasses(), fetchOpenAirAvailableClasses()])
     }, [])
   )
 
@@ -164,14 +163,16 @@ export const Home = () => {
 
   const renderContent = () => {
     const commonSectionListProps = {
-      renderItem: ({ item }) => (
-        <ClassInfoItem classInfo={item} style={{ paddingBottom: 100 }} />
+      renderItem: ({ item }: { item: ClassInfo }) => (
+        <ClassInfoItem classInfo={item} />
       ),
       showsVerticalScrollIndicator: false,
       renderSectionFooter: renderNoData,
-      renderSectionHeader: ({ section: { title } }) => (
-        <StyledSectionTitle>{title}</StyledSectionTitle>
-      ),
+      renderSectionHeader: ({
+        section: { title },
+      }: {
+        section: ClassesData
+      }) => <StyledSectionTitle>{title}</StyledSectionTitle>,
       refreshControl: (
         <RefreshControl
           refreshing={isRefreshing}
@@ -181,10 +182,6 @@ export const Home = () => {
           tintColor={highlight50}
         />
       ),
-    }
-
-    if (isLoading) {
-      return <Loading />
     }
 
     if (selectedClassType === CLASS_TYPES.INDOORS) {
@@ -201,7 +198,9 @@ export const Home = () => {
       return (
         <StyledSection
           sections={availableOpenAirClasses}
-          keyExtractor={(item) => `available-open-air-classes-${item.club}`}
+          keyExtractor={(item) =>
+            `available-open-air-classes-${item.club}`
+          }
           {...commonSectionListProps}
         />
       )
@@ -211,6 +210,7 @@ export const Home = () => {
   return (
     <>
       <StyledContainer accessible={true}>
+        {isLoading && <Loading />}
         <StyledHeader colors={[highlight90, highlight50]}>
           <Profile />
         </StyledHeader>
