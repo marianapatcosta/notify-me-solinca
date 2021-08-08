@@ -4,8 +4,7 @@ Mobile app that allows the clients of Solinca's fitness clubs to configure his/h
 Communicates with a Backend developed using Node.JS, Express.JS an MongoDB, which checks the available  classes and saves user preferences, and send push notifications using expo-server-sdk package [Backend GitHub Repository](https://github.com/marianapatcosta/solinca-notification-portal-be). 
 
 
-![notify-me-solinca-overview](https://user-images.githubusercontent.com/43031902/128610446-a061a004-b6e7-4ded-8ced-916f40848e25.png)
-
+![notify-me-solinca-overview](https://user-images.githubusercontent.com/43031902/128646754-08c402f0-af64-49af-be69-9e629341742d.png)
 ## Project setup
 
 ```

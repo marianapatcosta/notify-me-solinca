@@ -50,13 +50,9 @@ export const Home = () => {
   const { highlight50, highlight90, title } = theme.colors
   const { sendRequest, error, clearError, isLoading } = useHttpRequest()
   const [availableClasses, setAvailableClasses] = useState<ClassesData[]>([])
-  const [availableOpenAirClasses, setOpenAirAvailableClasses] = useState<
-    ClassesData[]
-  >([])
+  const [openAirAvailableClasses, setOpenAirAvailableClasses] = useState<ClassesData[]>([])
   const [errorMessage, setErrorMessage] = useState('')
-  const [selectedClassType, setSelectedClassType] = useState<ClassType>(
-    CLASS_TYPES.INDOORS
-  )
+  const [selectedClassType, setSelectedClassType] = useState<ClassType>(CLASS_TYPES.INDOORS)
   const [isRefreshing, setIsRefreshing] = useState<boolean>(false)
   const lastNotificationResponse = Notifications.useLastNotificationResponse()
 
@@ -197,10 +193,8 @@ export const Home = () => {
     if (selectedClassType === CLASS_TYPES.OPEN_AIR) {
       return (
         <StyledSection
-          sections={availableOpenAirClasses}
-          keyExtractor={(item) =>
-            `available-open-air-classes-${item.club}`
-          }
+          sections={openAirAvailableClasses}
+          keyExtractor={(item) => `available-open-air-classes-${item.club}`}
           {...commonSectionListProps}
         />
       )

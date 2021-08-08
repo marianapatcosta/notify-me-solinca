@@ -14,7 +14,7 @@
     "loginError": "Não foi possível fazer login. Por favor tente novamente.",
     "password": "Palavra-passe",
     "passwordError": "Palavra-passe inválida (min. {{characters}} carateres).",
-    "resetPassword": "Recuperar palavra-passe",
+    "resetPassword": "Recuperar Palavra-passe",
     "resetPasswordSuccess": "Foi enviado um link para recuperação da palavra-passe. Por favor verifique o seu email.",
     "resetPasswordError": "Não foi possível recuperar a sua palavra-passe. Por favor confirme o seu e-mail de registo.",
     "signUp": "Criar Conta",

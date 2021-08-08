@@ -107,74 +107,71 @@ export const SignIn = () => {
         <StyledContent>
           <StyledTitle>{t('authentication.title')}</StyledTitle>
           <StyledSubtitle>{t('authentication.subtitle')}</StyledSubtitle>
-          {isLoading ? (
-            <Loading />
-          ) : (
-            <View>
-              <Controller
-                control={control}
-                rules={{
-                  required: true,
-                }}
-                render={({ field: { onChange, onBlur, value } }) => (
-                  <Input
-                    onBlur={onBlur}
-                    onChangeText={onChange}
-                    value={value}
-                    placeholder={t('authentication.username')}
-                    error={
-                      !!errors.username ? t('authentication.usernameError') : ''
-                    }
-                  />
-                )}
-                name='username'
-                defaultValue=''
-              />
-              <Controller
-                control={control}
-                rules={{
-                  required: true,
-                  minLength: 8,
-                }}
-                render={({ field: { onChange, onBlur, value } }) => (
-                  <Input
-                    onBlur={onBlur}
-                    onChangeText={onChange}
-                    value={value}
-                    placeholder={t('authentication.password')}
-                    secureTextEntry={!showPassword}
-                    error={
-                      !!errors.password
-                        ? t('authentication.passwordError', {
-                            characters: '8',
-                          })
-                        : ''
-                    }
-                    icon={
-                      <PasswordIconButton
-                        showPassword={showPassword}
-                        onPress={toggleShowPassword}
-                      />
-                    }
-                  />
-                )}
-                name='password'
-                defaultValue=''
-              />
-              <Button
-                label={t('authentication.login')}
-                onPress={() => handleSubmit(handleSignIn)()}
-              />
-              <TouchableOpacity onPress={handleGoToResetPassword}>
-                <StyledLink>{t('authentication.forgotPassword')}</StyledLink>
-              </TouchableOpacity>
-              <TouchableOpacity onPress={handleGoToSignUp}>
-                <StyledLinkBottom>
-                  {t('authentication.createAccount')}
-                </StyledLinkBottom>
-              </TouchableOpacity>
-            </View>
-          )}
+          {isLoading && <Loading />}
+          <View>
+            <Controller
+              control={control}
+              rules={{
+                required: true,
+              }}
+              render={({ field: { onChange, onBlur, value } }) => (
+                <Input
+                  onBlur={onBlur}
+                  onChangeText={onChange}
+                  value={value}
+                  placeholder={t('authentication.username')}
+                  error={
+                    !!errors.username ? t('authentication.usernameError') : ''
+                  }
+                />
+              )}
+              name='username'
+              defaultValue=''
+            />
+            <Controller
+              control={control}
+              rules={{
+                required: true,
+                minLength: 8,
+              }}
+              render={({ field: { onChange, onBlur, value } }) => (
+                <Input
+                  onBlur={onBlur}
+                  onChangeText={onChange}
+                  value={value}
+                  placeholder={t('authentication.password')}
+                  secureTextEntry={!showPassword}
+                  error={
+                    !!errors.password
+                      ? t('authentication.passwordError', {
+                          characters: '8',
+                        })
+                      : ''
+                  }
+                  icon={
+                    <PasswordIconButton
+                      showPassword={showPassword}
+                      onPress={toggleShowPassword}
+                    />
+                  }
+                />
+              )}
+              name='password'
+              defaultValue=''
+            />
+            <Button
+              label={t('authentication.login')}
+              onPress={() => handleSubmit(handleSignIn)()}
+            />
+            <TouchableOpacity onPress={handleGoToResetPassword}>
+              <StyledLink>{t('authentication.forgotPassword')}</StyledLink>
+            </TouchableOpacity>
+            <TouchableOpacity onPress={handleGoToSignUp}>
+              <StyledLinkBottom>
+                {t('authentication.createAccount')}
+              </StyledLinkBottom>
+            </TouchableOpacity>
+          </View>
         </StyledContent>
       </ScrollView>
       <ModalView

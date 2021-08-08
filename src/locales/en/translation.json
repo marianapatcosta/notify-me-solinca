@@ -14,7 +14,7 @@
     "loginError": "It was not possible to log you in. Please try again.",
     "password": "Password",
     "passwordError": "Invalid password (min. {{characters}} characters).",
-    "resetPassword": "Reset password",
+    "resetPassword": "Reset Password",
     "resetPasswordSuccess": "A link to reset your password was sent. Please check your email.",
     "resetPasswordError": "It was not possible to reset your password. Please confirm your registry email.",
     "signUp": "Create Account",

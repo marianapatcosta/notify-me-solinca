@@ -65,27 +65,25 @@ export const ResetPassword = () => {
     <StyledContainer>
       <Header title={t('authentication.resetPassword')} />
       <StyledContent>
-        {isLoading ? (
-          <Loading />
-        ) : (
-          <View>
-            <ControlledInput
-              control={control}
-              rules={{
-                required: true,
-                pattern: emailRegex,
-              }}
-              name='email'
-              placeholder={t('authentication.email')}
-              error={!!errors.email ? t('authentication.emailError') : ''}
-            />
-            <Button
-              style={{ marginTop: 24 }}
-              label={t('authentication.resetPassword').toLowerCase()}
-              onPress={() => handleSubmit(handleResetPassword)()}
-            />
-          </View>
-        )}
+        {isLoading && <Loading />}
+        <View>
+          <ControlledInput
+            control={control}
+            rules={{
+              required: true,
+              pattern: emailRegex,
+            }}
+            name='email'
+            placeholder={t('authentication.email')}
+            error={!!errors.email ? t('authentication.emailError') : ''}
+          />
+          <Button
+            style={{ marginTop: 24 }}
+            label={t('authentication.resetPassword').toLowerCase()}
+            onPress={() => handleSubmit(handleResetPassword)()}
+          />
+        </View>
+        )
       </StyledContent>
       <ModalView
         visible={!!error || successRequest}

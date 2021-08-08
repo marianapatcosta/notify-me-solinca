@@ -39,7 +39,7 @@ export const SignUp = () => {
         ),
         expoPushToken,
       }
- 
+
       const responseData = await sendRequest(
         '/user/signup',
         HTTP_METHODS.POST as RequestMethod,
@@ -67,21 +67,18 @@ export const SignUp = () => {
       <Header title={t('authentication.signUp')} />
       <ScrollView showsVerticalScrollIndicator={false}>
         <StyledContent>
-          {isLoading ? (
-            <Loading />
-          ) : (
-            <View>
-              <UserForm
-                onSubmit={handleSignUp}
-                buttonLabel={t('authentication.signUp')}
-              />
-              <TouchableOpacity onPress={handleGoToSignIn}>
-                <StyledLinkBottom>
-                  {t('authentication.alreadyHaveAccount')}
-                </StyledLinkBottom>
-              </TouchableOpacity>
-            </View>
-          )}
+          {isLoading && <Loading />}
+          <View>
+            <UserForm
+              onSubmit={handleSignUp}
+              buttonLabel={t('authentication.signUp')}
+            />
+            <TouchableOpacity onPress={handleGoToSignIn}>
+              <StyledLinkBottom>
+                {t('authentication.alreadyHaveAccount')}
+              </StyledLinkBottom>
+            </TouchableOpacity>
+          </View>
         </StyledContent>
       </ScrollView>
       <ModalView
