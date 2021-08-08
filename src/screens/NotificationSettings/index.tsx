@@ -113,7 +113,7 @@ export const NotificationSettings = () => {
         )
       )
     } catch (error) {
-      setErrorMessage(t('userData.clubsError'))
+      setErrorMessage(t('notificationsSettings.clubsError'))
     }
   }, [sendRequest])
 
