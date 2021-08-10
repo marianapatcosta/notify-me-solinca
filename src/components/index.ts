@@ -1,6 +1,7 @@
 import { Avatar } from './Avatar'
 import { Button } from './Button'
 import { ClassInfoItem } from './ClassInfoItem'
+import { ClassesList } from './ClassesList'
 import { ClassTypeButton } from './ClassTypeButton'
 import { ControlledInput } from './ControlledInput'
 import { DropDown } from './Dropdown'
@@ -18,6 +19,7 @@ export {
   Avatar,
   Button,
   ClassInfoItem,
+  ClassesList,
   ClassTypeButton,
   ControlledInput,
   DropDown,

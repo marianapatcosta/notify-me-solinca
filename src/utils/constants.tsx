@@ -67,3 +67,50 @@ export const CLASSES = [
   'BARRA DE CHÃO',
   'ZUMBA',
 ]
+
+export enum CLASS_TYPES {
+  INDOORS = 'indoors',
+  OPEN_AIR = 'open air',
+}
+
+export type ClassType = `${CLASS_TYPES}`
+
+export type ClassesData = {
+  title: string
+  data: ClassInfo[]
+}
+
+export type Class = {
+  capacity: number
+  date: string
+  description: string
+  end: string
+  end_date: string
+  id: string
+  prof: string
+  project_code: string
+  project_id: string
+  start: string
+  start_date: string
+  status: string
+  taken: number
+}
+
+export type ClassInfo = {
+  club: string
+  today: Class[]
+  tomorrow: Class[]
+}
+
+export type ClassNotificationInfo = {
+  club: string
+  classesDetails: string[]
+}
+
+export type NotificationType = {
+  id: string
+  date: number // in ms
+  title: string
+  body: string
+  data: { classes: ClassNotificationInfo[] }
+}

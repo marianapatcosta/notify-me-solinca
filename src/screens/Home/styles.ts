@@ -25,20 +25,6 @@ export const StyledTitle = styled(StyledRegularText)`
   font-weight: 700;
   color: ${({ theme }) => theme.colors.font};
 `
-
-export const StyledNoData = styled(StyledRegularText)`
-  font-style: italic;
-`
-
-export const StyledSectionTitle = styled(StyledTitle)`
-  color: ${({ theme }) => theme.colors.highlight50};
-  margin: 8px 0;
-`
-
-export const StyledSection = styled.SectionList`
-  margin: 8px 0;
-`
-
 export const StyledClassesTypes = styled.View`
   flex-direction: row;
   justify-content: space-evenly;

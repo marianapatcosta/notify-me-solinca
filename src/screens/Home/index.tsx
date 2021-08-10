@@ -1,44 +1,39 @@
 import React, { useCallback, useState, useEffect } from 'react'
-import { Dimensions, RefreshControl } from 'react-native'
+import { Dimensions } from 'react-native'
 import { useFocusEffect, useNavigation } from '@react-navigation/native'
 import { useTheme } from 'styled-components'
 import * as Notifications from 'expo-notifications'
 import {
-  ClassInfoItem,
+  ClassesList,
   ClassTypeButton,
   Loading,
   Modal,
   ModalView,
   Profile,
 } from '../../components'
-import { ClassInfo } from '../../components/ClassInfoItem'
 import Indoors from '../../assets/svg/indoors.svg'
 import OpenAir from '../../assets/svg/open-air.svg'
 import { useAuth } from '../../hooks/auth'
 import { useLocale } from '../../hooks/useLocale'
 import { useHttpRequest, RequestMethod } from '../../hooks/useHttpRequest'
-import { HTTP_METHODS } from '../../utils/constants'
+import {
+  HTTP_METHODS,
+  CLASS_TYPES,
+  ClassType,
+  ClassesData,
+  ClassInfo,
+} from '../../utils/constants'
+import { useNotifications } from '../../hooks/notifications'
 import {
   StyledContainer,
   StyledContent,
   StyledHeader,
-  StyledNoData,
-  StyledSectionTitle,
-  StyledSection,
   StyledClassesTypes,
 } from './styles'
-import { useNotifications } from '../../hooks/notifications'
 
-enum CLASS_TYPES {
-  INDOORS = 'indoors',
-  OPEN_AIR = 'open air',
-}
-
-type ClassType = `${CLASS_TYPES}`
-
-type ClassesData = {
-  title: string
-  data: ClassInfo[]
+type ClassesResponse = {
+  matchedClasses: ClassInfo[]
+  otherClasses: ClassInfo[]
 }
 
 export const Home = () => {
@@ -47,13 +42,26 @@ export const Home = () => {
   const theme = useTheme()
   const navigation = useNavigation()
   const { handleNewNotification } = useNotifications()
-  const { highlight50, highlight90, title } = theme.colors
+  const { highlight50, highlight90 } = theme.colors
   const { sendRequest, error, clearError, isLoading } = useHttpRequest()
-  const [availableClasses, setAvailableClasses] = useState<ClassesData[]>([])
-  const [openAirAvailableClasses, setOpenAirAvailableClasses] = useState<ClassesData[]>([])
+  const initialClassesState = [
+    {
+      title: t('home.favoriteClasses'),
+      data: [],
+    },
+    {
+      title: t('home.otherClasses'),
+      data: [],
+    },
+  ]
+  const [availableClasses, setAvailableClasses] =
+    useState<ClassesData[]>(initialClassesState)
+  const [openAirAvailableClasses, setOpenAirAvailableClasses] =
+    useState<ClassesData[]>(initialClassesState)
   const [errorMessage, setErrorMessage] = useState('')
-  const [selectedClassType, setSelectedClassType] = useState<ClassType>(CLASS_TYPES.INDOORS)
-  const [isRefreshing, setIsRefreshing] = useState<boolean>(false)
+  const [selectedClassType, setSelectedClassType] = useState<ClassType>(
+    CLASS_TYPES.INDOORS
+  )
   const lastNotificationResponse = Notifications.useLastNotificationResponse()
 
   const handleSelectIndoorClasses = () =>
@@ -62,26 +70,16 @@ export const Home = () => {
   const handleSelectOpenAirClasses = () =>
     setSelectedClassType(CLASS_TYPES.OPEN_AIR)
 
-  const areThereClassesAvailable = (classes: ClassInfo[]) =>
-    !classes.every(({ today, tomorrow }) => !today.length && !tomorrow.length)
-
   const fetchAvailableClasses = useCallback(async () => {
     try {
-      const responseData = await sendRequest(
+      const responseData: ClassesResponse = await sendRequest(
         '/club/classes',
         HTTP_METHODS.GET as RequestMethod,
         {}
       )
-      setAvailableClasses([
-        {
-          title: t('home.favoriteClasses'),
-          data: responseData.matchedClasses,
-        },
-        {
-          title: t('home.otherClasses'),
-          data: responseData.otherClasses,
-        },
-      ])
+      setAvailableClasses((prevState) =>
+        handleFetchClassesSuccess(prevState, responseData)
+      )
     } catch (error) {
       setErrorMessage(t('home.classesError'))
     }
@@ -89,7 +87,7 @@ export const Home = () => {
 
   const fetchOpenAirAvailableClasses = useCallback(async () => {
     try {
-      const responseData = await sendRequest(
+      const responseData: ClassesResponse = await sendRequest(
         '/club/open-air-classes',
         HTTP_METHODS.GET as RequestMethod,
         {
@@ -98,28 +96,29 @@ export const Home = () => {
           },
         }
       )
-      setOpenAirAvailableClasses([
-        {
-          title: t('home.favoriteClasses'),
-          data: responseData.matchedClasses,
-        },
-        {
-          title: t('home.otherClasses'),
-          data: responseData.otherClasses,
-        },
-      ])
+      setOpenAirAvailableClasses((prevState) =>
+        handleFetchClassesSuccess(prevState, responseData)
+      )
     } catch (error) {
       setErrorMessage(t('home.classesError'))
     }
   }, [sendRequest])
 
-  const handleRefresh = useCallback(async () => {
-    setIsRefreshing(true)
-    await Promise.all([fetchAvailableClasses(), fetchOpenAirAvailableClasses()])
-    setTimeout(() => {
-      setIsRefreshing(false)
-    }, 1000)
-  }, [])
+  const handleFetchClassesSuccess = (
+    prevState: ClassesData[],
+    responseData: ClassesResponse
+  ) => {
+    return [
+      {
+        ...prevState[0],
+        data: responseData.matchedClasses,
+      },
+      {
+        ...prevState[1],
+        data: responseData.otherClasses,
+      },
+    ]
+  }
 
   useFocusEffect(
     useCallback(() => {
@@ -151,64 +150,14 @@ export const Home = () => {
     }
   }, [lastNotificationResponse])
 
-  const renderNoData = ({ section }: { section: ClassesData }) => {
-    if (!areThereClassesAvailable(section.data)) {
-      return <StyledNoData>{t('home.noClassesAvailable')}</StyledNoData>
-    }
-  }
-
-  const renderContent = () => {
-    const commonSectionListProps = {
-      renderItem: ({ item }: { item: ClassInfo }) => (
-        <ClassInfoItem classInfo={item} />
-      ),
-      showsVerticalScrollIndicator: false,
-      renderSectionFooter: renderNoData,
-      renderSectionHeader: ({
-        section: { title },
-      }: {
-        section: ClassesData
-      }) => <StyledSectionTitle>{title}</StyledSectionTitle>,
-      refreshControl: (
-        <RefreshControl
-          refreshing={isRefreshing}
-          onRefresh={handleRefresh}
-          colors={[highlight50]}
-          progressBackgroundColor={title}
-          tintColor={highlight50}
-        />
-      ),
-    }
-
-    if (selectedClassType === CLASS_TYPES.INDOORS) {
-      return (
-        <StyledSection
-          sections={availableClasses}
-          keyExtractor={(item) => `available-classes-${item.club}`}
-          {...commonSectionListProps}
-        />
-      )
-    }
-
-    if (selectedClassType === CLASS_TYPES.OPEN_AIR) {
-      return (
-        <StyledSection
-          sections={openAirAvailableClasses}
-          keyExtractor={(item) => `available-open-air-classes-${item.club}`}
-          {...commonSectionListProps}
-        />
-      )
-    }
-  }
-
   return (
     <>
       <StyledContainer accessible={true}>
-        {isLoading && <Loading />}
         <StyledHeader colors={[highlight90, highlight50]}>
           <Profile />
         </StyledHeader>
         <StyledContent>
+          {isLoading && <Loading />}
           <StyledClassesTypes>
             <ClassTypeButton
               icon={Indoors}
@@ -221,7 +170,17 @@ export const Home = () => {
               onPress={handleSelectOpenAirClasses}
             />
           </StyledClassesTypes>
-          {renderContent()}
+          <ClassesList
+            selectedClassType={selectedClassType}
+            availableClasses={availableClasses}
+            openAirAvailableClasses={openAirAvailableClasses}
+            onRefresh={() =>
+              Promise.all([
+                fetchAvailableClasses(),
+                fetchOpenAirAvailableClasses(),
+              ])
+            }
+          />
         </StyledContent>
       </StyledContainer>
       <ModalView

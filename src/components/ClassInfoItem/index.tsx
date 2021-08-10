@@ -1,6 +1,7 @@
 import React from 'react'
 import { View } from 'react-native'
 import { useLocale } from '../../hooks/useLocale'
+import { ClassInfo } from '../../utils/constants'
 import {
   StyledContainer,
   StyledClub,
@@ -11,27 +12,6 @@ import {
   StyledDivider,
 } from './styles'
 
-export type Class = {
-  capacity: number
-  date: string
-  description: string
-  end: string
-  end_date: string
-  id: string
-  prof: string
-  project_code: string
-  project_id: string
-  start: string
-  start_date: string
-  status: string
-  taken: number
-}
-
-export type ClassInfo = {
-  club: string
-  today: Class[]
-  tomorrow: Class[]
-}
 
 type ClassInfoItemProps = {
   classInfo: ClassInfo

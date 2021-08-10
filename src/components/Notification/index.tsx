@@ -4,7 +4,7 @@ import { MaterialIcons } from '@expo/vector-icons'
 import { useLocale } from '../../hooks/useLocale'
 import { useTheme } from 'styled-components'
 import { formatDate } from '../../utils/format-date'
-import { NotificationType, ClassInfo } from '../../hooks/notifications'
+import { NotificationType, ClassNotificationInfo } from '../../utils/constants'
 import {
   StyledContainer,
   StyledHeader,
@@ -31,7 +31,7 @@ export const Notification = ({
   const { t } = useLocale()
   const theme = useTheme()
 
-  const classes: ClassInfo[] = data.classes
+  const classes: ClassNotificationInfo[] = data.classes
 
   const getClassDetail = (classDetail: string): string => {
     const [weekDay, ...classDetailsArray] = classDetail.split(' ')
@@ -56,7 +56,7 @@ export const Notification = ({
       <StyledSubtitle>{body}</StyledSubtitle>
       <StyledBody>
         <View>
-          {classes.map(({ club, classesDetails }: ClassInfo) => (
+          {classes.map(({ club, classesDetails }: ClassNotificationInfo) => (
             <StyledItem key={`${id}-classes-${club}`}>
               <StyledClub>{club}</StyledClub>
               {classesDetails.map((detail: string) => (

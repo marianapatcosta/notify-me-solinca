@@ -7,22 +7,11 @@ import React, {
 } from 'react'
 import * as Notifications from 'expo-notifications'
 import * as TaskManager from 'expo-task-manager'
-import { COLLECTION_NOTIFICATIONS } from '../utils/constants'
+import {
+  COLLECTION_NOTIFICATIONS,
+  NotificationType,
+} from '../utils/constants'
 import { useAsyncStorage } from './useAsyncStorage'
-import { Alert } from 'react-native'
-
-export type ClassInfo = {
-  club: string
-  classesDetails: string[]
-}
-
-export type NotificationType = {
-  id: string
-  date: number // in ms
-  title: string
-  body: string
-  data: { classes: ClassInfo[] }
-}
 
 type NotificationsContextData = {
   notifications: NotificationType[]
