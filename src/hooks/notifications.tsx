@@ -81,7 +81,7 @@ const NotificationsContextProvider = ({
   //}
 
   // since every time the app is installed a new push token is assigned to the device,
-  // and when user instals the app must sign in or sign up, this ensures that correct token
+  // and when user install the app must sign in or sign up, this ensures that correct token
   // is saved in the DB and permission are given
   // ask for permissions (only applicable for ios) and gets expoPushToken
   const registerForPushNotificationsAsync = async () => {

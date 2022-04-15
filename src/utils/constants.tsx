@@ -5,7 +5,6 @@ const DATABASE_NAME = '@notify-me-solinca'
 
 // @app:collection
 export const COLLECTION_USER_AUTH = `${DATABASE_NAME}:user-auth`
-export const COLLECTION_APPOINTMENTS = `${DATABASE_NAME}:appointments`
 export const COLLECTION_LOCALE = `${DATABASE_NAME}:locale`
 export const COLLECTION_THEME = `${DATABASE_NAME}:theme`
 export const COLLECTION_NOTIFICATIONS = `${DATABASE_NAME}:notifications`

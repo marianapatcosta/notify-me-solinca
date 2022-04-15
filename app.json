@@ -28,7 +28,7 @@
       },
       "icon": "./assets/notification-icon.png",
       "useNextNotificationsApi": false,
-      "package": "com.costa.mariana",
+      "package": "com.costa.mariana.solinca.notification",
       "googleServicesFile": "./google-services.json"
     },
     "web": {
